@@ -1,5 +1,6 @@
-const API_BASE_URL = "http://13.214.156.69:8080/books";
-const GENRE_BASE_URL = `${API_BASE_URL}/genres`;
+import { BOOKS_API_URL } from "./config";
+
+const GENRE_BASE_URL = `${BOOKS_API_URL}/genres`;
 
 export class GenreApiError extends Error {
   constructor(message, { status, code, payload } = {}) {

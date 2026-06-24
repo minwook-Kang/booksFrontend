@@ -1,6 +1,7 @@
 import { parseErrorMessage, parseJsonResponse } from "./httpUtils";
+import { API_BASE_URL, BOOKS_API_URL } from "./config";
 
-const BASE_URL = "http://13.214.156.69:8080/books";
+const REVIEWS_BASE_URL = `${API_BASE_URL}/reviews`;
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -9,7 +10,7 @@ const JSON_HEADERS = {
 /** GET /books/{bookId}/reviews */
 export const getReviewsByBookId = async (bookId) => {
   try {
-    const res = await fetch(`${BASE_URL}/books/${bookId}/reviews`);
+    const res = await fetch(`${BOOKS_API_URL}/${bookId}/reviews`);
 
     if (!res.ok) {
       throw new Error("리뷰 목록 조회 실패");
@@ -26,7 +27,7 @@ export const getReviewsByBookId = async (bookId) => {
 /** GET /books/{bookId}/reviews/rating */
 export const getBookRating = async (bookId) => {
   try {
-    const res = await fetch(`${BASE_URL}/books/${bookId}/reviews/rating`);
+    const res = await fetch(`${BOOKS_API_URL}/${bookId}/reviews/rating`);
 
     if (!res.ok) {
       throw new Error("평균 별점 조회 실패");
@@ -42,7 +43,7 @@ export const getBookRating = async (bookId) => {
 
 /** POST /books/{bookId}/reviews */
 export const createReview = async (bookId, { content, rating }) => {
-  const res = await fetch(`${BASE_URL}/books/${bookId}/reviews`, {
+  const res = await fetch(`${BOOKS_API_URL}/${bookId}/reviews`, {
     method: "POST",
     headers: JSON_HEADERS,
     body: JSON.stringify({ content, rating }),
@@ -57,7 +58,7 @@ export const createReview = async (bookId, { content, rating }) => {
 
 /** PATCH /reviews/{reviewId} */
 export const updateReview = async (reviewId, { content, rating }) => {
-  const res = await fetch(`${BASE_URL}/reviews/${reviewId}`, {
+  const res = await fetch(`${REVIEWS_BASE_URL}/${reviewId}`, {
     method: "PATCH",
     headers: JSON_HEADERS,
     body: JSON.stringify({ content, rating }),
@@ -72,7 +73,7 @@ export const updateReview = async (reviewId, { content, rating }) => {
 
 /** DELETE /reviews/{reviewId} */
 export const deleteReview = async (reviewId) => {
-  const res = await fetch(`${BASE_URL}/reviews/${reviewId}`, {
+  const res = await fetch(`${REVIEWS_BASE_URL}/${reviewId}`, {
     method: "DELETE",
   });
 
@@ -85,7 +86,7 @@ export const deleteReview = async (reviewId) => {
 
 /** PATCH /reviews/{reviewId}/like */
 export const likeReview = async (reviewId) => {
-  const res = await fetch(`${BASE_URL}/reviews/${reviewId}/like`, {
+  const res = await fetch(`${REVIEWS_BASE_URL}/${reviewId}/like`, {
     method: "PATCH",
   });
 
