@@ -8,6 +8,7 @@ import {
 import {
   createGenre,
   getGenreErrorMessage,
+  getGenres,
   isGenreAlreadyExistsError,
 } from "../api/genreApi";
 import { toast } from "react-hot-toast";
@@ -32,6 +33,8 @@ const INITIAL_BOOK_DATA = {
 const GENRE_CREATE_SETTLE_DELAY_MS = 300;
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const normalizeGenreName = (value = "") => value.trim().toLowerCase().replace(/\s+/g, "");
 
 function BookDetailPage({
   mode,
@@ -241,21 +244,27 @@ function BookDetailPage({
       }
 
       if (selectedGenreId === null || selectedGenreId === undefined || selectedGenreId === "") {
-        setGenreFeedback({
-          type: "error",
-          title: "장르 ID 없음",
-          message: "선택한 장르의 ID를 확인할 수 없습니다. 장르 목록에서 다시 선택해주세요.",
-        });
-        toast.error("장르 목록에서 장르를 다시 선택해주세요.", {
-          position: toastPosition,
-        });
-        return;
+        try {
+          const genres = await getGenres();
+          const matchedGenre = Array.isArray(genres)
+            ? genres.find((genre) => {
+                return normalizeGenreName(getGenreName(genre)) === normalizeGenreName(selectedGenreName);
+              })
+            : null;
+
+          selectedGenreId = getGenreId(matchedGenre);
+        } catch (error) {
+          console.error(error);
+        }
       }
 
       const bookPayload = {
         title: bookData.title.trim(),
         author: bookData.author.trim(),
-        genreId: Number(selectedGenreId),
+        ...(selectedGenreId !== null && selectedGenreId !== undefined && selectedGenreId !== ""
+          ? { genreId: Number(selectedGenreId) }
+          : {}),
+        genre: genreName,
         content: bookData.content.trim(),
         coverImageUrl: bookData.coverImageUrl || "",
       };
