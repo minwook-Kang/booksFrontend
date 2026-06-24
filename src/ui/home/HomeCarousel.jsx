@@ -5,6 +5,8 @@ import HomeRecommendedBooksSlide from "./HomeRecommendedBooksSlide";
 import HomeSlideControls from "./HomeSlideControls";
 import { HOME_SLIDES } from "./homeContent";
 
+const SLIDES = Array.isArray(HOME_SLIDES) ? HOME_SLIDES : [];
+
 function HomeCarousel({
   recommendedBooks,
   isLoadingBooks,
@@ -16,13 +18,13 @@ function HomeCarousel({
 
   const goPrevSlide = () => {
     setActiveSlide((prev) =>
-      prev === 0 ? HOME_SLIDES.length - 1 : prev - 1,
+      prev === 0 ? Math.max(SLIDES.length - 1, 0) : prev - 1,
     );
   };
 
   const goNextSlide = () => {
     setActiveSlide((prev) =>
-      prev === HOME_SLIDES.length - 1 ? 0 : prev + 1,
+      prev === SLIDES.length - 1 ? 0 : prev + 1,
     );
   };
 
@@ -34,7 +36,7 @@ function HomeCarousel({
     >
       <HomeSlideControls
         activeSlide={activeSlide}
-        slides={HOME_SLIDES}
+        slides={SLIDES}
         onSelect={setActiveSlide}
       />
 

@@ -41,7 +41,7 @@ function ReviewSection({ bookId }) {
         getBookRating(bookId),
       ]);
 
-      setReviews(reviewList);
+      setReviews(Array.isArray(reviewList) ? reviewList : []);
       setAverageRating(rating);
     } catch (error) {
       console.error(error);
@@ -65,7 +65,7 @@ function ReviewSection({ bookId }) {
     const updatedReview = await likeReview(reviewId);
 
     setReviews((prev) =>
-      prev.map((review) => {
+      (Array.isArray(prev) ? prev : []).map((review) => {
         if (review.reviewId !== reviewId) {
           return review;
         }
@@ -79,7 +79,8 @@ function ReviewSection({ bookId }) {
     );
   };
 
-  const reviewCount = reviews.length;
+  const safeReviews = Array.isArray(reviews) ? reviews : [];
+  const reviewCount = safeReviews.length;
 
   return (
     <section className="reviewSection" aria-labelledby="review-section-title">
@@ -120,7 +121,7 @@ function ReviewSection({ bookId }) {
 
         {!loading && !errorMessage && reviewCount > 0 ? (
           <ul className="reviewSection-list">
-            {reviews.map((review) => (
+            {safeReviews.map((review) => (
               <li key={review.reviewId} className="reviewSection-listItem">
                 <ReviewCard review={review} onLike={handleLikeReview} />
               </li>

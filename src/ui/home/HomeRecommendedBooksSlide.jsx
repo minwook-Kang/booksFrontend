@@ -7,7 +7,8 @@ function HomeRecommendedBooksSlide({
   isLoading,
   onGoDetail,
 }) {
-  const recommendedBook = books[0];
+  const safeBooks = Array.isArray(books) ? books : [];
+  const recommendedBook = safeBooks[0];
 
   return (
     <article
