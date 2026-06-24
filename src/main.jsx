@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
+import { HashRouter } from "react-router-dom"
 import './styles/colors.css'
 import './styles/font-size.css'
 import "./styles/comSt.css";
