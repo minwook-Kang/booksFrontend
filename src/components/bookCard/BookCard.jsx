@@ -1,14 +1,7 @@
 import { useState } from "react";
 import BookImage from "./BookImage";
+import { getGenreName } from "../../utils/genreFormat";
 import "./BookCardStyle.css";
-
-const getGenreName = (genre) => {
-  if (typeof genre === "string") {
-    return genre;
-  }
-
-  return genre?.name || "";
-};
 
 function BookCard({ book, onClick, onLike }) {
   const [likeBurstId, setLikeBurstId] = useState(0);

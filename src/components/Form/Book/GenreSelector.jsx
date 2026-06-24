@@ -1,14 +1,7 @@
 import { useState } from "react";
 import GenreModal from "./GenreModal";
+import { getGenreName } from "../../../utils/genreFormat";
 import "./GenreSelector.css";
-
-const getGenreName = (genre) => {
-  if (typeof genre === "string") {
-    return genre;
-  }
-
-  return genre?.name || "";
-};
 
 function GenreSelector({
   selectedGenre,

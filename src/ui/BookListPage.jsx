@@ -8,17 +8,10 @@ import BookCard from "../components/bookCard/BookCard";
 import BookImage from "../components/bookCard/BookImage";
 import GenreSelector from "../components/Form/Book/GenreSelector";
 import MainButton from "../components/comButton/MainButton";
+import { getGenreId, getGenreName } from "../utils/genreFormat";
 import "./BookListPage.css";
 
 const hasCoverImage = (book) => Boolean(book?.coverImageUrl?.trim());
-
-const getGenreName = (genre) => {
-  if (typeof genre === "string") {
-    return genre;
-  }
-
-  return genre?.name || "";
-};
 
 const getShelfMeta = (book) => {
   const genreName = getGenreName(book?.genre);
@@ -89,8 +82,9 @@ function BookListPage({
   const handleGenreSelect = async (genre) => {
     setSelectedGenre(genre);
     setKeyword("");
+    const genreId = getGenreId(genre);
 
-    if (!genre?.id) {
+    if (!genreId) {
       const data = await BookList();
       setBooks(Array.isArray(data) ? data : []);
       setListMessage("");
@@ -98,7 +92,7 @@ function BookListPage({
     }
 
     try {
-      const data = await getBooksByGenre(genre.id);
+      const data = await getBooksByGenre(genreId);
       setBooks(Array.isArray(data) ? data : []);
       setListMessage("");
     } catch (error) {

@@ -3,16 +3,9 @@ import { toast } from "react-hot-toast";
 import Fuse from "fuse.js";
 import Filter from "badwords-ko";
 import { getGenreErrorMessage, getGenres } from "../../../api/genreApi";
+import { getGenreId, getGenreName } from "../../../utils/genreFormat";
 import { useLockBodyScroll } from "../../../utils/useLockBodyScroll";
 import "./GenreModal.css";
-
-const getGenreName = (genre) => {
-  if (typeof genre === "string") {
-    return genre;
-  }
-
-  return genre?.name || "";
-};
 
 const normalizeGenre = (value = "") => {
   return value.trim().replace(/\s+/g, " ");
@@ -40,8 +33,11 @@ const isSameGenre = (selectedGenre, genre) => {
   const selectedName = getGenreName(selectedGenre);
   const genreName = getGenreName(genre);
 
-  if (selectedGenre?.id && genre?.id) {
-    return String(selectedGenre.id) === String(genre.id);
+  const selectedId = getGenreId(selectedGenre);
+  const genreId = getGenreId(genre);
+
+  if (selectedId && genreId) {
+    return String(selectedId) === String(genreId);
   }
 
   return normalizeForCompare(selectedName) === normalizeForCompare(genreName);
@@ -159,7 +155,7 @@ function GenreModal({
 
   const handleGenreSelect = (genre) => {
     onSelectGenre({
-      id: genre?.id ?? null,
+      genreId: getGenreId(genre),
       name: getGenreName(genre),
       isNew: Boolean(genre?.isNew),
     });
@@ -167,7 +163,7 @@ function GenreModal({
 
   const addPendingGenre = (genreName) => {
     const nextGenre = {
-      id: null,
+      genreId: null,
       name: genreName,
       isNew: true,
     };
@@ -240,7 +236,7 @@ function GenreModal({
     });
 
     onSelectGenre({
-      id: genre?.id ?? null,
+      genreId: getGenreId(genre),
       name: suggestedGenre,
       isNew: Boolean(genre?.isNew),
     });
@@ -301,7 +297,7 @@ function GenreModal({
 
           return (
             <button
-              key={genre.id ?? `new-${normalizeForCompare(genreName)}`}
+              key={getGenreId(genre) ?? `new-${normalizeForCompare(genreName)}`}
               type="button"
               className={`genre-modal-item ${
                 isSameGenre(selectedGenre, genre) ? "selected" : ""

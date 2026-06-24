@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 
 import Header from "../components/Header";
 import BookForm from "../components/Form/Book/BookForm";
+import { getGenreId, getGenreName } from "../utils/genreFormat";
 import "./BookDetailPage.css";
 
 const INITIAL_BOOK_DATA = {
@@ -96,14 +97,8 @@ function BookDetailPage({
           return;
         }
 
-        const genreValue =
-          typeof data.genre === "object" && data.genre !== null
-            ? data.genre.name
-            : data.genre;
-        const genreId =
-          typeof data.genre === "object" && data.genre !== null
-            ? data.genre.id
-            : data.genreId;
+        const genreValue = getGenreName(data.genre) || data.genre;
+        const genreId = getGenreId(data.genre) ?? data.genreId;
 
         setBookData({
           title: data.title || "",
@@ -183,8 +178,8 @@ function BookDetailPage({
           });
 
           createdGenre = await createGenre(selectedGenreName);
-          selectedGenreId = createdGenre?.id ?? null;
-          genreName = createdGenre?.name || selectedGenreName;
+          selectedGenreId = getGenreId(createdGenre);
+          genreName = getGenreName(createdGenre) || selectedGenreName;
 
           if (!selectedGenreId) {
             setGenreFeedback({

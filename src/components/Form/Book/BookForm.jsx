@@ -4,6 +4,7 @@ import MainButton from "../../comButton/MainButton";
 import BookImage from "../../bookCard/BookImage";
 import ImageForm from "../AiImage/ImageForm";
 import GenreSelector from "./GenreSelector";
+import { getGenreId, getGenreName } from "../../../utils/genreFormat";
 import "./BookFormStyle.css";
 
 const CREATE_STEPS = [
@@ -56,7 +57,7 @@ function BookForm({
 
   const selectedGenre = bookData.genre
     ? {
-        id: bookData.genreId ?? null,
+        genreId: bookData.genreId ?? null,
         name: bookData.genre,
         isNew: Boolean(bookData.isNewGenre),
       }
@@ -79,8 +80,8 @@ function BookForm({
   };
 
   const handleGenreSelect = (genre) => {
-    const genreName = typeof genre === "string" ? genre : genre?.name || "";
-    const genreId = typeof genre === "string" ? null : genre?.id ?? null;
+    const genreName = getGenreName(genre);
+    const genreId = getGenreId(genre);
     const isNewGenre = typeof genre === "string" ? false : Boolean(genre?.isNew);
 
     setBookData((prev) => ({
