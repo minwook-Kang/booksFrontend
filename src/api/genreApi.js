@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "http://13.214.156.69:8080/books";
 const GENRE_BASE_URL = `${API_BASE_URL}/genres`;
 
 export class GenreApiError extends Error {
