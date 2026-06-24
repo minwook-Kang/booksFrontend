@@ -1,6 +1,6 @@
-import { BOOKS_API_URL } from "./config";
+import { API_BASE_URL } from "./config";
 
-const GENRE_BASE_URL = `${BOOKS_API_URL}/genres`;
+const GENRE_BASE_URL = `${API_BASE_URL}/genres`;
 
 export class GenreApiError extends Error {
   constructor(message, { status, code, payload } = {}) {
